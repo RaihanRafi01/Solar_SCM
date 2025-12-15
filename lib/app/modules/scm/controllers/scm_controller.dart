@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ScmController extends GetxController {
@@ -18,6 +19,12 @@ class ScmController extends GetxController {
   void onClose() {
     super.onClose();
   }
+
+  final ScrollController scrollController = ScrollController();
+
+  final RxDouble scrollOffset = 0.0.obs;
+  final RxDouble maxScrollExtent = 0.0.obs;
+  final RxDouble viewportSize = 0.0.obs;
 
   void increment() => count.value++;
 }

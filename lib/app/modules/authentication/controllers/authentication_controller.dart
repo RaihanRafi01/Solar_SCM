@@ -1,23 +1,9 @@
 import 'package:get/get.dart';
 
 class AuthenticationController extends GetxController {
-  //TODO: Implement AuthenticationController
+  var isPasswordVisible = false.obs;
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  void togglePasswordVisibility() {
+    isPasswordVisible.value = !isPasswordVisible.value;
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

@@ -11,7 +11,7 @@ class AppPages {
   AppPages._();
 
   /// Initial route
-  static const INITIAL = Routes.AUTHENTICATION;
+  static const INITIAL = Routes.SCM;
 
   /// All application routes
   static final routes = <GetPage>[
