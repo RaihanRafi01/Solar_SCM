@@ -1,5 +1,5 @@
 name: scube_task
-description: "A new Flutter project."
+description: "A new Flutter project"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -34,6 +34,8 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  get: ^4.7.3
+  json_annotation: ^4.9.0
 
 dev_dependencies:
   flutter_test:
@@ -44,7 +46,9 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
+  build_runner: ^2.10.4
+  json_serializable: ^6.11.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -62,9 +66,19 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/to/resolution-aware-images
-
+  # An image asset can refer to one or more resolution-variant files by
+  # specifying the directory name without the extension. For example, the
+  # following would look for an image file called `my_image.png` in the
+  # assets/images/ directory. For each resolution variant, the corresponding
+  # image asset may be stored at a subdirectory of the same name followed by
+  # the image's extension:
+  #
+  #   assets:
+  #     images/:
+  #       - my_image.png
+  #       - 2.0x/my_image.png
+  #       - 3.0x/my_image.png
+  #
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/to/asset-from-package
 
