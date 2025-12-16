@@ -11,14 +11,37 @@ class ActionScreenView extends GetView<ScmController> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16.w),
-      color: Colors.white,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 20.h),
-          Text('This content is shown for all bottom actions.', style: h4.copyWith(color: AppColors.textColor3)),
-        ],
+      color: AppColors.scmBackground,
+      child: Center(
+        child: Container(
+          margin: EdgeInsets.all(24).r,
+          height: double.maxFinite,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12.r),
+            border: Border.all(
+              color: AppColors.borderColor,
+              width: 1.w,
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset('assets/images/no_data_image.png', scale: 4),
+              SizedBox(height: 16.h),
+              Text(
+                'No data is here,\nplease wait.',
+                textAlign: TextAlign.center,
+                style: h4.copyWith(
+                  color: AppColors.textHint,
+                  fontSize: 14.sp,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
