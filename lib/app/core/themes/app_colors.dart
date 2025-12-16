@@ -32,6 +32,8 @@ class AppColors {
   static const Color indicatorColor2 = Color(0xFF080B7F);
 
   static const Color cardColor1 = Color(0xFFE5F4FE);
+  static final Color startColor = Color(0x9919416E);
+  static final Color endColor = Color(0x002F548C);
 
 
 

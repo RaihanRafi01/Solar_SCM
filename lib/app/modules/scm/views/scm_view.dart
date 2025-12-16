@@ -18,6 +18,10 @@ class ScmView extends GetView<ScmController> {
     final double thumbThickness = 8.w;
     final double thumbRadius = 5.r;
     final double listHeight = 250.h; // Fixed height for calculation
+
+
+      // Alpha 0x00 = 0% (Transparent)
+
     return Scaffold(
       backgroundColor: AppColors.scmBackground,
       appBar: AppBar(
@@ -25,40 +29,22 @@ class ScmView extends GetView<ScmController> {
         elevation: 0,
         scrolledUnderElevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: AppColors.textPrimary, size: 24.sp),
+          icon: Icon(Icons.arrow_back, color: AppColors.textColor4, size: 24.sp),
           onPressed: () => Get.back(),
         ),
         title: Text(
           'SCM',
-          style: TextStyle(
-            color: AppColors.textPrimary,
-            fontSize: 20.sp,
-            fontWeight: FontWeight.w600,
+          style: h3.copyWith(
+            color: AppColors.textColor4,
+            fontSize: 24.sp,
           ),
         ),
         centerTitle: true,
         actions: [
-          Stack(
-            children: [
-              IconButton(
-                icon: Icon(Icons.notifications_outlined,
-                    color: AppColors.textPrimary, size: 24.sp),
-                onPressed: () {},
-              ),
-              Positioned(
-                right: 12.w,
-                top: 12.h,
-                child: Container(
-                  width: 8.w,
-                  height: 8.h,
-                  decoration: const BoxDecoration(
-                    color: Colors.red,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              ),
-            ],
-          ),
+          Padding(
+            padding: const EdgeInsets.all(16).r,
+            child: SvgPicture.asset('assets/images/bell_icon.svg',height: 20.h,width: 20.h,),
+          )
         ],
       ),
       body: SingleChildScrollView(
@@ -98,7 +84,7 @@ class ScmView extends GetView<ScmController> {
                   Padding(
                     padding: EdgeInsets.all(16.w),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           'Electricity',
@@ -164,8 +150,9 @@ class ScmView extends GetView<ScmController> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 16.h),
-
+                        SizedBox(height: 6.h),
+                        Divider(height: 2.h, color: AppColors.textColor3,thickness: 2,),
+                        SizedBox(height: 12.h),
                         SizedBox(
                           height: listHeight,
                           child: NotificationListener<ScrollNotification>(
@@ -182,36 +169,80 @@ class ScmView extends GetView<ScmController> {
                             },
                             child: Stack(
                               children: [
-                                // List View
-                                ListView(
-                                  controller: controller.scrollController, // Attach controller
-                                  padding: EdgeInsets.only(right: 16.w),
-                                  physics: const AlwaysScrollableScrollPhysics(),
-                                  children: [
-                                    _buildDataCard('Data View', 'assets/images/solar-cell_icon.png', true, '55505.63', '58805.63', AppColors.appColor3),
-                                    SizedBox(height: 12.h),
-                                    _buildDataCard('Data Type 2', 'assets/images/power_icon.png', true, '55505.63', '58805.63', AppColors.orange),
-                                    SizedBox(height: 12.h),
-                                    _buildDataCard('Data Type 3', 'assets/images/power_grid_icon.png', false, '55505.63', '58805.63', AppColors.appColor3),
-                                    SizedBox(height: 12.h),
-                                    _buildDataCard('Data View', 'assets/images/solar-cell_icon.png', true, '55505.63', '58805.63', AppColors.appColor3),
-                                    SizedBox(height: 12.h),
-                                    _buildDataCard('Data Type 2', 'assets/images/power_icon.png', true, '55505.63', '58805.63', AppColors.orange),
-                                    SizedBox(height: 12.h),
-                                    _buildDataCard('Data Type 3', 'assets/images/power_grid_icon.png', false, '55505.63', '58805.63', AppColors.appColor3),
-                                  ],
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 16.0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(12.r),
+                                    child: Stack(
+                                      children: [
+                                        // List View
+                                        ListView(
+                                          controller: controller.scrollController, // Attach controller
+                                          // Remove padding here, we handle the separation via sizing/positioning
+                                          physics: const AlwaysScrollableScrollPhysics(),
+                                          children: [
+                                            _buildDataCard('Data View', 'assets/images/solar-cell_icon.png', true, '55505.63', '58805.63', AppColors.appColor3),
+                                            SizedBox(height: 12.h),
+                                            _buildDataCard('Data Type 2', 'assets/images/power_icon.png', true, '55505.63', '58805.63', AppColors.orange),
+                                            SizedBox(height: 12.h),
+                                            _buildDataCard('Data Type 3', 'assets/images/power_grid_icon.png', false, '55505.63', '58805.63', AppColors.appColor3),
+                                            SizedBox(height: 12.h),
+                                            _buildDataCard('Data View', 'assets/images/solar-cell_icon.png', true, '55505.63', '58805.63', AppColors.appColor3),
+                                            SizedBox(height: 12.h),
+                                            _buildDataCard('Data Type 2', 'assets/images/power_icon.png', true, '55505.63', '58805.63', AppColors.orange),
+                                            SizedBox(height: 12.h),
+                                            _buildDataCard('Data Type 3', 'assets/images/power_grid_icon.png', false, '55505.63', '58805.63', AppColors.appColor3),
+                                            SizedBox(height: 12.h),
+                                            _buildDataCard('Data View', 'assets/images/solar-cell_icon.png', true, '55505.63', '58805.63', AppColors.appColor3),
+                                            SizedBox(height: 12.h),
+                                            _buildDataCard('Data Type 2', 'assets/images/power_icon.png', true, '55505.63', '58805.63', AppColors.orange),
+                                            SizedBox(height: 12.h),
+                                            _buildDataCard('Data Type 3', 'assets/images/power_grid_icon.png', false, '55505.63', '58805.63', AppColors.appColor3),
+
+                                          ],
+                                        ),
+
+                                        // Bottom Fading Gradient Shadow (clipped)
+                                        Positioned.fill(
+                                          child: Align(
+                                            alignment: Alignment.bottomCenter,
+                                            child: IgnorePointer(
+                                              child: DecoratedBox(
+                                                decoration: BoxDecoration(
+                                                  gradient: LinearGradient(
+                                                    begin: Alignment.bottomCenter,
+                                                    end: Alignment.topCenter,
+                                                    colors: [
+                                                      AppColors.startColor,
+                                                      AppColors.endColor,
+                                                    ],
+                                                    stops: const [0.0, 1.0],
+                                                  ),
+                                                ),
+                                                child: SizedBox(height: 30.h, width: double.infinity),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
 
-                                // 2. Custom Gradient Thumb (Reactive)
-                                Obx(() => GradientScrollThumb(
-                                  thickness: thumbThickness,
-                                  radius: thumbRadius,
-                                  trackHeight: listHeight, // Use trackHeight instead of height
-                                  totalScrollExtent: controller.maxScrollExtent.value,
-                                  viewportDimension: controller.viewportSize.value,
-                                  currentScrollOffset: controller.scrollOffset.value,
-                                  scrollController: controller.scrollController, // NEW: Pass the controller
-                                  trackColor: AppColors.borderColor, // Example track color
+                                Obx(() => Positioned(
+                                  right: 0, // Position the scrollbar at the far right
+                                  top: 0,
+                                  bottom: 0,
+                                  child: GradientScrollThumb(
+                                    thickness: thumbThickness,
+                                    radius: thumbRadius,
+                                    trackHeight: listHeight,
+                                    totalScrollExtent: controller.maxScrollExtent.value,
+                                    viewportDimension: controller.viewportSize.value,
+                                    currentScrollOffset: controller.scrollOffset.value,
+                                    scrollController: controller.scrollController,
+                                    trackColor: AppColors.borderColor,
+                                  ),
                                 ),
                                 ),
                               ],
@@ -224,33 +255,31 @@ class ScmView extends GetView<ScmController> {
                 ],
               ),
             ),
-
-            // Bottom Action Buttons
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
               child: Column(
                 children: [
                   Row(
                     children: [
-                      Expanded(child: _buildActionButton('📊', 'Analysis Pro')),
+                      Expanded(child: _buildActionButton('assets/images/analysis_icon.png', 'Analysis Pro')),
                       SizedBox(width: 12.w),
-                      Expanded(child: _buildActionButton('🔧', 'G. Generator')),
+                      Expanded(child: _buildActionButton('assets/images/generator_icon.png', 'G. Generator')),
                     ],
                   ),
                   SizedBox(height: 12.h),
                   Row(
                     children: [
-                      Expanded(child: _buildActionButton('⚡', 'Plant Summary')),
+                      Expanded(child: _buildActionButton('assets/images/charge_icon.png', 'Plant Summary')),
                       SizedBox(width: 12.w),
-                      Expanded(child: _buildActionButton('🔥', 'Natural Gas')),
+                      Expanded(child: _buildActionButton('assets/images/fire_icon.png', 'Natural Gas')),
                     ],
                   ),
                   SizedBox(height: 12.h),
                   Row(
                     children: [
-                      Expanded(child: _buildActionButton('🔧', 'D. Generator')),
+                      Expanded(child: _buildActionButton('assets/images/generator_icon.png', 'D. Generator')),
                       SizedBox(width: 12.w),
-                      Expanded(child: _buildActionButton('🚰', 'Water Process')),
+                      Expanded(child: _buildActionButton('assets/images/faucet_icon.png', 'Water Process')),
                     ],
                   ),
                   SizedBox(height: 20.h),
@@ -391,37 +420,34 @@ class ScmView extends GetView<ScmController> {
 
   Widget _buildActionButton(String icon, String title) {
     return Container(
-      height: 70.h,
+      height: 42.h,
+      width: 148.w,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        border: Border.all(color: AppColors.borderColor, width: 1),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(icon, style: TextStyle(fontSize: 24.sp)),
-          SizedBox(width: 8.w),
-          Flexible(
-            child: Text(
-              title,
-              style: TextStyle(
-                color: AppColors.textPrimary,
-                fontSize: 15.sp,
-                fontWeight: FontWeight.w500,
+      child: Padding(
+        padding: const EdgeInsets.all(10.0).r,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Image.asset(icon,height: 24.h,width: 24.h,),
+            SizedBox(width: 8.w),
+            Flexible(
+              child: Text(
+                title,
+                style: h2.copyWith(
+                  color: AppColors.textColor2,
+                  fontSize: 14.sp,
+                ),
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

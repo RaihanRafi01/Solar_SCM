@@ -67,7 +67,6 @@ class GradientScrollThumb extends StatelessWidget {
     scrollController.jumpTo(newScrollOffset);
   }
   // --- END DRAG LOGIC ---
-
   @override
   Widget build(BuildContext context) {
     // If the list isn't scrollable, hide the thumb and track
