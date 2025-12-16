@@ -1,4 +1,5 @@
-// Refactored GradientScrollThumb to handle dragging
+// shared/widgets/gradient_scroll_thumb.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 // Assuming AppColors is available
@@ -7,12 +8,12 @@ import '../../core/themes/app_colors.dart';
 class GradientScrollThumb extends StatelessWidget {
   final double thickness;
   final double radius;
-  final double trackHeight; // Renamed 'height' for clarity
+  final double trackHeight;
   final double totalScrollExtent;
   final double viewportDimension;
   final double currentScrollOffset;
-  final ScrollController scrollController; // NEW: Pass the controller
-  final Color trackColor; // NEW: Track background color
+  final ScrollController scrollController;
+  final Color trackColor;
 
   const GradientScrollThumb({
     super.key,
@@ -23,67 +24,50 @@ class GradientScrollThumb extends StatelessWidget {
     required this.viewportDimension,
     required this.currentScrollOffset,
     required this.scrollController,
-    this.trackColor = AppColors.borderColor, // Light gray track
+    this.trackColor = Colors.black12, // Default to visible dark shade for contrast
   });
 
-  // Calculate the maximum distance the thumb can travel in the track
   double get maxThumbScrollExtent {
     final double thumbHeight = (viewportDimension / (totalScrollExtent + viewportDimension)) * trackHeight;
     return trackHeight - thumbHeight;
   }
 
-  // Calculate the size of the thumb
   double get thumbHeight {
     return (viewportDimension / (totalScrollExtent + viewportDimension)) * trackHeight;
   }
 
-  // Calculate the thumb position
   double get thumbPosition {
-    // If scrollExtent is 0 (not scrollable), return 0
     if (totalScrollExtent <= 0) return 0;
-
     final double scrollFraction = currentScrollOffset / totalScrollExtent;
     return scrollFraction * maxThumbScrollExtent;
   }
 
-
-  // --- DRAG LOGIC ---
   void _onVerticalDragUpdate(DragUpdateDetails details) {
-    if (totalScrollExtent <= 0) return; // Cannot drag if not scrollable
-
-    // 1. Calculate the new vertical position of the thumb in the track
+    if (totalScrollExtent <= 0) return;
     double newThumbPosition = thumbPosition + details.primaryDelta!;
-
-    // 2. Clamp the new position within the valid track bounds
     newThumbPosition = newThumbPosition.clamp(0.0, maxThumbScrollExtent);
-
-    // 3. Calculate the corresponding scroll fraction
     final double scrollFraction = newThumbPosition / maxThumbScrollExtent;
-
-    // 4. Calculate the new scroll offset for the ListView
     final double newScrollOffset = scrollFraction * totalScrollExtent;
-
-    // 5. Scroll the list programmatically
     scrollController.jumpTo(newScrollOffset);
   }
-  // --- END DRAG LOGIC ---
+
   @override
   Widget build(BuildContext context) {
-    // If the list isn't scrollable, hide the thumb and track
+    // Hide if not scrollable
     if (totalScrollExtent <= 0) {
       return const SizedBox.shrink();
     }
 
-    //
-
+    // FIX: Only one Positioned widget is used to avoid the runtime error.
     return Positioned(
       right: 0,
-      top: 0, // Track starts at the top
+      top: 0,
+      bottom: 0, // Constrains the track to the full height (listHeight)
       child: Container(
-        height: trackHeight, // Height of the track
+        // The track height is now managed by the parent Positioned
         width: thickness,
         decoration: BoxDecoration(
-          color: trackColor, // Track color
+          color: trackColor, // Ensure this provides good contrast!
           borderRadius: BorderRadius.circular(radius),
         ),
         child: Stack(
@@ -91,7 +75,7 @@ class GradientScrollThumb extends StatelessWidget {
             // Custom Thumb positioned within the Track
             Positioned(
               top: thumbPosition,
-              child: GestureDetector( // Allow dragging the thumb
+              child: GestureDetector(
                 onVerticalDragUpdate: _onVerticalDragUpdate,
                 child: Container(
                   width: thickness,
@@ -99,7 +83,6 @@ class GradientScrollThumb extends StatelessWidget {
                   height: thumbHeight.clamp(63.h, trackHeight),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(radius),
-                    // Apply the Gradient
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
