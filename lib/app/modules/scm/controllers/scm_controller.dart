@@ -16,6 +16,11 @@ class ScmController extends GetxController {
 
   final activeView = ScmContentView.initialSummary.obs;
 
+
+  RxBool isDataViewSelected = true.obs;
+
+  RxBool isTodaySelected = true.obs;
+
   @override
   void onReady() {
     super.onReady();
