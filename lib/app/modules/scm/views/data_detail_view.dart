@@ -1,24 +1,81 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-// Assuming these imports are correct based on your snippet
+import 'dart:math';
 import '../../../core/themes/app_colors.dart';
 import '../../../core/themes/app_text_styles.dart';
 import '../controllers/scm_controller.dart';
+
+class CustomArcPainter extends CustomPainter {
+  final Color foregroundColor;
+  final Color backgroundColor;
+  final double strokeWidth;
+  final double progress;
+
+  CustomArcPainter({
+    required this.foregroundColor,
+    required this.backgroundColor,
+    required this.strokeWidth,
+    required this.progress,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = Offset(size.width / 2, size.height / 2);
+    final radius = min(size.width / 2, size.height / 2) - strokeWidth / 2;
+    final rect = Rect.fromCircle(center: center, radius: radius);
+
+    final backgroundPaint = Paint()
+      ..color = backgroundColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeWidth
+      ..strokeCap = StrokeCap.round;
+
+    final foregroundPaint = Paint()
+      ..color = foregroundColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeWidth
+      ..strokeCap = StrokeCap.round;
+
+    const double startAngle = 5 * pi / 6;
+
+    const double sweepAngle = 4 * pi / 3;
+
+    canvas.drawArc(
+        rect,
+        startAngle,
+        sweepAngle,
+        false,
+        backgroundPaint
+    );
+
+    canvas.drawArc(
+        rect,
+        startAngle,
+        sweepAngle * progress,
+        false,
+        foregroundPaint
+    );
+  }
+
+  @override
+  bool shouldRepaint(CustomArcPainter oldDelegate) {
+    return oldDelegate.progress != progress;
+  }
+}
+
 
 class DataDetailView extends GetView<ScmController> {
   const DataDetailView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Controller is available as 'controller'
     return Container(
       color: const Color(0xFFD7E3F0),
       child: Stack(
         children: [
-          // Main curved card with all content
           Positioned.fill(
-            top: 40.h, // Half of the toggle button height
+            top: 40.h,
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -32,15 +89,11 @@ class DataDetailView extends GetView<ScmController> {
                       () => Column(
                     children: [
                       SizedBox(height: 50.h),
-
-                      // Conditional Content based on View Selection
                       controller.isDataViewSelected.value
-                          ? _buildDataViewContent() // Data View Content
-                          : _buildRevenueViewContent(), // Revenue View Content
+                          ? _buildDataViewContent()
+                          : _buildRevenueViewContent(),
 
                       SizedBox(height: 30.h),
-
-                      // Date Filter Section - Centered and Functional
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16.w),
                         child: Row(
@@ -67,7 +120,6 @@ class DataDetailView extends GetView<ScmController> {
                         ),
                       ),
 
-                      // Date Pickers Row - Conditional
                       if (!controller.isTodaySelected.value)...[
                         SizedBox(height: 12.h),
                         Padding(
@@ -97,12 +149,10 @@ class DataDetailView extends GetView<ScmController> {
                             ],
                           ),
                         ),
-                      ], // ONLY SHOW on Custom Date
-
+                      ],
 
                       SizedBox(height: 16.h),
 
-                      // Energy Chart Card 1
                       _buildEnergyChartCard(
                         title: 'Energy Chart',
                         dataTotal: '20.05 kw',
@@ -110,12 +160,10 @@ class DataDetailView extends GetView<ScmController> {
 
                       SizedBox(height: 20.h),
 
-                      // Energy Chart Card 2
                       _buildEnergyChartCard(
                         title: 'Energy Chart',
                         dataTotal: '5.53 kw',
                       ),
-
                       SizedBox(height: 20.h),
                     ],
                   ),
@@ -124,7 +172,6 @@ class DataDetailView extends GetView<ScmController> {
             ),
           ),
 
-          // View Toggle Buttons - positioned on top center of curved card
           Positioned(
             top: 20,
             left: 0,
@@ -174,9 +221,6 @@ class DataDetailView extends GetView<ScmController> {
     );
   }
 
-  // --- Widget Builders for Abstraction and Re-use ---
-
-  // Build the content for Data View (CircularProgressIndicator from top)
   Widget _buildDataViewContent() {
     return SizedBox(
       width: 160.w,
@@ -184,15 +228,13 @@ class DataDetailView extends GetView<ScmController> {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          SizedBox(
-            width: 160.w,
-            height: 160.w,
-            child: CircularProgressIndicator(
-              value: 0.7,
-              strokeWidth: 12.w,
+          CustomPaint(
+            size: Size(160.w, 160.w),
+            painter: CustomArcPainter(
+              foregroundColor: AppColors.primary,
               backgroundColor: const Color(0xFFE3F2FD),
-              valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
-              strokeCap: StrokeCap.round,
+              strokeWidth: 12.w,
+              progress: 0.7,
             ),
           ),
           Column(
@@ -220,7 +262,6 @@ class DataDetailView extends GetView<ScmController> {
     );
   }
 
-  // Build the content for Revenue View (Opposite-U CircularProgressIndicator)
   Widget _buildRevenueViewContent() {
     return SizedBox(
       width: 160.w,
@@ -228,20 +269,13 @@ class DataDetailView extends GetView<ScmController> {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // Custom CircularProgressIndicator (Opposite of U shape)
-          // Starts from left (pi), goes to right (2*pi or 0), then to pi/2 (top)
-          Transform.rotate(
-            angle: -3.14159, // Rotate by 180 degrees (to start from left and make it opposite U)
-            child: SizedBox(
-              width: 160.w,
-              height: 160.w,
-              child: CircularProgressIndicator(
-                value: 0.7, // Example value
-                strokeWidth: 12.w,
-                backgroundColor: const Color(0xFFE3F2FD),
-                valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
-                strokeCap: StrokeCap.round,
-              ),
+          CustomPaint(
+            size: Size(160.w, 160.w),
+            painter: CustomArcPainter(
+              foregroundColor: AppColors.primary,
+              backgroundColor: const Color(0xFFE3F2FD),
+              strokeWidth: 12.w,
+              progress: 0.9,
             ),
           ),
           Column(
@@ -269,7 +303,6 @@ class DataDetailView extends GetView<ScmController> {
     );
   }
 
-  // Date Filter Chip Builder (Same circle logic)
   Widget _buildDateFilterChip({required String label, required bool isSelected}) {
     final color = isSelected ? AppColors.primary :  AppColors.textColor2;
 
@@ -310,7 +343,6 @@ class DataDetailView extends GetView<ScmController> {
     );
   }
 
-  // Date Picker Container Builder
   Widget _buildDatePickerContainer(String label) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
@@ -339,7 +371,6 @@ class DataDetailView extends GetView<ScmController> {
     );
   }
 
-  // View Toggle Button Builder
   Widget _buildToggleButton({required String label, required bool isSelected}) {
     final color = isSelected ? AppColors.primary : AppColors.borderColor2;
     final textColor = isSelected ? AppColors.primary : AppColors.textColor2;
@@ -382,7 +413,6 @@ class DataDetailView extends GetView<ScmController> {
     );
   }
 
-  // Energy Chart Card Builder
   Widget _buildEnergyChartCard({required String title, required String dataTotal}) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.w),
@@ -419,7 +449,6 @@ class DataDetailView extends GetView<ScmController> {
 
           SizedBox(height: 16.h),
 
-          // Data Cards
           _buildDataCard('Data A', const Color(0xFF2196F3), '2798.50 (29.53%)', '35689 ৳'),
           SizedBox(height: 12.h),
           _buildDataCard('Data B', const Color(0xFF42C5F5), '72598.50 (35.39%)', '5259689 ৳'),
@@ -432,7 +461,6 @@ class DataDetailView extends GetView<ScmController> {
     );
   }
 
-  // Data Card Builder (from your original code)
   Widget _buildDataCard(String label, Color color, String dataValue, String costValue) {
     return Container(
       padding: EdgeInsets.all(12.w),
@@ -443,7 +471,6 @@ class DataDetailView extends GetView<ScmController> {
       ),
       child: Row(
         children: [
-          // Color indicator and label
           Row(
             children: [
               Container(
@@ -474,7 +501,6 @@ class DataDetailView extends GetView<ScmController> {
 
           SizedBox(width: 16.w),
 
-          // Data and Cost
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
