@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 // These imports are assumed to exist in your project
 import '../../../core/themes/app_colors.dart';
@@ -14,9 +15,9 @@ class ScmView extends GetView<ScmController> {
   @override
   Widget build(BuildContext context) {
 
-    final double thumbThickness = 10.w;
+    final double thumbThickness = 8.w;
     final double thumbRadius = 5.r;
-    final double listHeight = 420.h; // Fixed height for calculation
+    final double listHeight = 250.h; // Fixed height for calculation
     return Scaffold(
       backgroundColor: AppColors.scmBackground,
       appBar: AppBar(
@@ -165,59 +166,58 @@ class ScmView extends GetView<ScmController> {
                         ),
                         SizedBox(height: 16.h),
 
+                        SizedBox(
+                          height: listHeight,
+                          child: NotificationListener<ScrollNotification>(
+                            // 1. Listen for scroll events to update reactive variables
+                            onNotification: (notification) {
+                              if (notification is ScrollUpdateNotification) {
+                                controller.scrollOffset.value = notification.metrics.pixels;
+                              } else if (notification.metrics.maxScrollExtent > 0) {
+                                // Update dimensions when scroll metrics are available
+                                controller.maxScrollExtent.value = notification.metrics.maxScrollExtent;
+                                controller.viewportSize.value = notification.metrics.viewportDimension;
+                              }
+                              return false; // Allow notification to bubble up
+                            },
+                            child: Stack(
+                              children: [
+                                // List View
+                                ListView(
+                                  controller: controller.scrollController, // Attach controller
+                                  padding: EdgeInsets.only(right: 16.w),
+                                  physics: const AlwaysScrollableScrollPhysics(),
+                                  children: [
+                                    _buildDataCard('Data View', 'assets/images/solar-cell_icon.png', true, '55505.63', '58805.63', AppColors.appColor3),
+                                    SizedBox(height: 12.h),
+                                    _buildDataCard('Data Type 2', 'assets/images/power_icon.png', true, '55505.63', '58805.63', AppColors.orange),
+                                    SizedBox(height: 12.h),
+                                    _buildDataCard('Data Type 3', 'assets/images/power_grid_icon.png', false, '55505.63', '58805.63', AppColors.appColor3),
+                                    SizedBox(height: 12.h),
+                                    _buildDataCard('Data View', 'assets/images/solar-cell_icon.png', true, '55505.63', '58805.63', AppColors.appColor3),
+                                    SizedBox(height: 12.h),
+                                    _buildDataCard('Data Type 2', 'assets/images/power_icon.png', true, '55505.63', '58805.63', AppColors.orange),
+                                    SizedBox(height: 12.h),
+                                    _buildDataCard('Data Type 3', 'assets/images/power_grid_icon.png', false, '55505.63', '58805.63', AppColors.appColor3),
+                                  ],
+                                ),
 
-                  SizedBox(
-                  height: listHeight,
-                  child: NotificationListener<ScrollNotification>(
-                  // 1. Listen for scroll events to update reactive variables
-                  onNotification: (notification) {
-      if (notification is ScrollUpdateNotification) {
-      controller.scrollOffset.value = notification.metrics.pixels;
-      } else if (notification.metrics.maxScrollExtent > 0) {
-      // Update dimensions when scroll metrics are available
-      controller.maxScrollExtent.value = notification.metrics.maxScrollExtent;
-      controller.viewportSize.value = notification.metrics.viewportDimension;
-      }
-      return false; // Allow notification to bubble up
-      },
-        child: Stack(
-          children: [
-            // List View
-            ListView(
-              controller: controller.scrollController, // Attach controller
-              // Add right padding to prevent content overlap with the custom thumb
-              padding: EdgeInsets.only(right: 18.w),
-              physics: const AlwaysScrollableScrollPhysics(),
-              children: [
-                _buildDataCard('Data View', '🔆', true, '55505.63', '58805.63', AppColors.primary),
-                SizedBox(height: 12.h),
-                _buildDataCard('Data Type 2', '🔋', true, '55505.63', '58805.63', Colors.orange),
-                SizedBox(height: 12.h),
-                _buildDataCard('Data Type 3', '🗼', false, '55505.63', '58805.63', AppColors.primary),
-                SizedBox(height: 12.h),
-                _buildDataCard('Solar Panel', '☀️', true, '32100.00', '34500.00', Colors.amber),
-                SizedBox(height: 12.h),
-                _buildDataCard('Grid Supply', '⚡', true, '89000.50', '91000.50', Colors.blue),
-                SizedBox(height: 12.h),
-                _buildDataCard('Backup Generator', '🔧', false, '1200.00', '1500.00', Colors.grey),
-                SizedBox(height: 20.h),
-              ],
-            ),
-
-            // 2. Custom Gradient Thumb (Reactive)
-            Obx(() => GradientScrollThumb(
-              thickness: thumbThickness,
-              radius: thumbRadius,
-              height: listHeight,
-              totalScrollExtent: controller.maxScrollExtent.value,
-              viewportDimension: controller.viewportSize.value,
-              currentScrollOffset: controller.scrollOffset.value,
-            ),
-            ),
-          ],
-        ),
-      ),
-    ),
+                                // 2. Custom Gradient Thumb (Reactive)
+                                Obx(() => GradientScrollThumb(
+                                  thickness: thumbThickness,
+                                  radius: thumbRadius,
+                                  trackHeight: listHeight, // Use trackHeight instead of height
+                                  totalScrollExtent: controller.maxScrollExtent.value,
+                                  viewportDimension: controller.viewportSize.value,
+                                  currentScrollOffset: controller.scrollOffset.value,
+                                  scrollController: controller.scrollController, // NEW: Pass the controller
+                                  trackColor: AppColors.borderColor, // Example track color
+                                ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -315,27 +315,18 @@ class ScmView extends GetView<ScmController> {
       Color indicatorColor,
       ) {
     return Container(
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.all(8.r),
       decoration: BoxDecoration(
-        color: isActive ? const Color(0xFFE8F4FD) : const Color(0xFFD6DCE3),
+        color: AppColors.cardColor1,
         borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
-          color: isActive ? AppColors.primary.withOpacity(0.3) : Colors.transparent,
+          color: AppColors.borderColor2,
           width: 1,
         ),
       ),
       child: Row(
         children: [
-          Container(
-            width: 48.w,
-            height: 48.h,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8.r),
-            ),
-            alignment: Alignment.center,
-            child: Text(icon, style: TextStyle(fontSize: 24.sp)),
-          ),
+          Image.asset(icon,height: 24.h,width: 24.h,),
           SizedBox(width: 12.w),
           Expanded(
             child: Column(
@@ -354,33 +345,45 @@ class ScmView extends GetView<ScmController> {
                     SizedBox(width: 8.w),
                     Text(
                       title,
-                      style: TextStyle(
-                        color: AppColors.textPrimary,
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600,
+                      style: h3.copyWith(
+                        color: AppColors.textColor4,
+                        fontSize: 14.sp,
                       ),
                     ),
                     SizedBox(width: 8.w),
                     Text(
                       isActive ? '(Active)' : '(Inactive)',
-                      style: TextStyle(
-                        color: isActive ? AppColors.primary : Colors.red,
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w500,
+                      style: h3.copyWith(
+                        color: isActive ? AppColors.primary : AppColors.red,
+                        fontSize: 10.sp,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 8.h),
-                Text('Data 1    : $data1',
-                    style: TextStyle(color: AppColors.textHint, fontSize: 14.sp)),
-                SizedBox(height: 4.h),
-                Text('Data 2    : $data2',
-                    style: TextStyle(color: AppColors.textHint, fontSize: 14.sp)),
+                SizedBox(height: 2.h),
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(text: 'Data 1    : ', style: h4.copyWith(fontSize: 12,color: AppColors.textColor2)),
+                      TextSpan(text: data1, style: h4.copyWith(fontSize: 12)), // This part is BLACK
+                    ],
+                  ),
+                ),
+                SizedBox(height: 2.h),
+
+                // --- Data 2 with Rich Text ---
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(text: 'Data 2    : ', style: h4.copyWith(fontSize: 12,color: AppColors.textColor2)),
+                      TextSpan(text: data2, style: h4.copyWith(fontSize: 12)), // This part is BLACK
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
-          Icon(Icons.chevron_right, color: AppColors.textHint, size: 24.sp),
+          SvgPicture.asset('assets/images/right_icon.svg')
         ],
       ),
     );
