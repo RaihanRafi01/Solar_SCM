@@ -112,11 +112,9 @@ class ScmView extends GetView<ScmController> with ScmWidgets {
                       ),
                       SizedBox(height: 6.h),
                       Divider(height: 1.h, color: AppColors.textColor3),
-                      SizedBox(height: 40.h),
-
+                      SizedBox(height: 30.h),
                       SizedBox(height: 150.h, child: _buildPowerCircle()),
                       SizedBox(height: 24.h),
-
                       Container(
                         height: 32.h,
                         decoration: BoxDecoration(
@@ -311,7 +309,7 @@ class ScmView extends GetView<ScmController> with ScmWidgets {
               width: 200.w,
               height: 200.h,
               child: CircularProgressIndicator(
-                value: 0.75,
+                value: 1,
                 strokeWidth: 28.w,
                 backgroundColor: const Color(0xFFE8EDF2),
                 valueColor: AlwaysStoppedAnimation<Color>(AppColors.appColor2),

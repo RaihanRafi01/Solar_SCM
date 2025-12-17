@@ -41,21 +41,10 @@ class CustomArcPainter extends CustomPainter {
     const double startAngle = 5 * pi / 6;
     const double sweepAngle = 4 * pi / 3;
 
-    canvas.drawArc(
-        rect,
-        startAngle,
-        sweepAngle,
-        false,
-        backgroundPaint
-    );
+    canvas.drawArc(rect, startAngle, sweepAngle, false, backgroundPaint);
 
     canvas.drawArc(
-        rect,
-        startAngle,
-        sweepAngle * progress,
-        false,
-        foregroundPaint
-    );
+        rect, startAngle, sweepAngle * progress, false, foregroundPaint);
   }
 
   @override
@@ -91,7 +80,6 @@ class DataDetailView extends GetView<ScmController> {
                       controller.isDataViewSelected.value
                           ? _buildDataViewContent()
                           : _buildRevenueViewContent(),
-
                       if (controller.isDataViewSelected.value) ...[
                         SizedBox(height: 30.h),
                         Padding(
@@ -100,7 +88,8 @@ class DataDetailView extends GetView<ScmController> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               GestureDetector(
-                                onTap: () => controller.isTodaySelected.value = true,
+                                onTap: () =>
+                                controller.isTodaySelected.value = true,
                                 child: _buildDateFilterChip(
                                   label: 'Today Data',
                                   isSelected: controller.isTodaySelected.value,
@@ -108,7 +97,8 @@ class DataDetailView extends GetView<ScmController> {
                               ),
                               SizedBox(width: 12.w),
                               GestureDetector(
-                                onTap: () => controller.isTodaySelected.value = false,
+                                onTap: () =>
+                                controller.isTodaySelected.value = false,
                                 child: _buildDateFilterChip(
                                   label: 'Custom Date Data',
                                   isSelected: !controller.isTodaySelected.value,
@@ -117,48 +107,57 @@ class DataDetailView extends GetView<ScmController> {
                             ],
                           ),
                         ),
-
-                        if (!controller.isTodaySelected.value)...[
-                          SizedBox(height: 12.h),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 16).r,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: _buildDatePickerContainer('From Date'),
+                        AnimatedSize(
+                          duration: const Duration(milliseconds: 300),
+                          child: !controller.isTodaySelected.value
+                              ? Column(
+                            children: [
+                              SizedBox(height: 12.h),
+                              Padding(
+                                padding:
+                                EdgeInsets.symmetric(horizontal: 16.r),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: _buildDatePickerContainer(
+                                          'From Date'),
+                                    ),
+                                    SizedBox(width: 5.w),
+                                    Expanded(
+                                      child: _buildDatePickerContainer(
+                                          'To Date'),
+                                    ),
+                                    SizedBox(width: 5.w),
+                                    Container(
+                                        height: 36.h,
+                                        width: 34.h,
+                                        padding: EdgeInsets.all(8).r,
+                                        decoration: BoxDecoration(
+                                            color: AppColors.cream,
+                                            borderRadius:
+                                            BorderRadius.circular(6.r),
+                                            border: Border.all(
+                                                color: AppColors.primary)),
+                                        child: SvgPicture.asset(
+                                            'assets/images/search_icon.svg')),
+                                  ],
                                 ),
-                                SizedBox(width: 5.w),
-                                Expanded(
-                                  child: _buildDatePickerContainer('To Date'),
-                                ),
-                                SizedBox(width: 5.w),
-                                Container(
-                                  height: 36.h,
-                                  width: 34.h,
-                                  padding: EdgeInsets.all(8).r,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.cream,
-                                    borderRadius: BorderRadius.circular(6.r),
-                                    border: Border.all(color: AppColors.primary)
-                                  ),
-                                  child: SvgPicture.asset('assets/images/search_icon.svg')
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-
+                              ),
+                            ],
+                          )
+                              : const SizedBox.shrink(),
+                        ),
                         SizedBox(height: 16.h),
-
                         _buildEnergyChartCard(
                           title: 'Energy Chart',
-                          dataTotal: '20.05 kw',
+                          dataTotal: controller.isTodaySelected.value
+                              ? '20.05 kw'
+                              : '125.40 kw',
                         ),
-
                         if (!controller.isTodaySelected.value) ...[
                           SizedBox(height: 16.h),
                           _buildEnergyChartCard(
-                            title: 'Energy Chart',
+                            title: 'Secondary Chart',
                             dataTotal: '5.53 kw',
                           ),
                         ],
@@ -170,7 +169,6 @@ class DataDetailView extends GetView<ScmController> {
               ),
             ),
           ),
-
           Positioned(
             top: 20,
             left: 0,
@@ -191,7 +189,8 @@ class DataDetailView extends GetView<ScmController> {
                     children: [
                       Expanded(
                         child: GestureDetector(
-                          onTap: () => controller.isDataViewSelected.value = true,
+                          onTap: () =>
+                          controller.isDataViewSelected.value = true,
                           child: _buildToggleButton(
                             label: 'Data View',
                             isSelected: controller.isDataViewSelected.value,
@@ -200,7 +199,8 @@ class DataDetailView extends GetView<ScmController> {
                       ),
                       Expanded(
                         child: GestureDetector(
-                          onTap: () => controller.isDataViewSelected.value = false,
+                          onTap: () =>
+                          controller.isDataViewSelected.value = false,
                           child: _buildToggleButton(
                             label: 'Revenue View',
                             isSelected: !controller.isDataViewSelected.value,
@@ -219,43 +219,55 @@ class DataDetailView extends GetView<ScmController> {
   }
 
   Widget _buildDataViewContent() {
-    return SizedBox(
-      width: 160.w,
-      height: 160.w,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          CustomPaint(
-            size: Size(160.w, 160.w),
-            painter: CustomArcPainter(
-              foregroundColor: AppColors.primary,
-              backgroundColor: AppColors.primary.withOpacity(0.15),
-              strokeWidth: 16.w,
-              progress: 0.7,
+    return Obx(() {
+      double progress = controller.isTodaySelected.value ? 0.57 : 0.77;
+      String value = controller.isTodaySelected.value ? '57.00' : '77.30';
+
+      return SizedBox(
+        width: 160.w,
+        height: 160.w,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            TweenAnimationBuilder<double>(
+              tween: Tween<double>(begin: 0, end: progress),
+              duration: const Duration(milliseconds: 800),
+              curve: Curves.easeOutCubic,
+              builder: (context, value, child) {
+                return CustomPaint(
+                  size: Size(160.w, 160.w),
+                  painter: CustomArcPainter(
+                    foregroundColor: AppColors.primary,
+                    backgroundColor: AppColors.primary.withOpacity(0.15),
+                    strokeWidth: 16.w,
+                    progress: value,
+                  ),
+                );
+              },
             ),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                '57.00',
-                style: h3.copyWith(
-                  fontSize: 20.sp,
-                  color: AppColors.textColor4,
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  value,
+                  style: h3.copyWith(
+                    fontSize: 20.sp,
+                    color: AppColors.textColor4,
+                  ),
                 ),
-              ),
-              Text(
-                'kWh/Sqft',
-                style: h3.copyWith(
-                  fontSize: 14.sp,
-                  color: AppColors.textColor4,
+                Text(
+                  'kWh/Sqft',
+                  style: h3.copyWith(
+                    fontSize: 14.sp,
+                    color: AppColors.textColor4,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+              ],
+            ),
+          ],
+        ),
+      );
+    });
   }
 
   Widget _buildRevenueViewContent() {
@@ -288,7 +300,7 @@ class DataDetailView extends GetView<ScmController> {
                   ),
                   Text(
                     'tk',
-                    style: h3.copyWith (
+                    style: h3.copyWith(
                       fontSize: 14.sp,
                       color: AppColors.textColor4,
                     ),
@@ -298,10 +310,7 @@ class DataDetailView extends GetView<ScmController> {
             ],
           ),
         ),
-
         SizedBox(height: 16.h),
-
-        // Data & Cost Info Card
         Container(
           margin: EdgeInsets.symmetric(horizontal: 16.w),
           decoration: BoxDecoration(
@@ -313,17 +322,22 @@ class DataDetailView extends GetView<ScmController> {
             children: [
               // Header
               InkWell(
-                onTap: () => controller.isRevenueDataExpanded.value = !controller.isRevenueDataExpanded.value,
+                onTap: () => controller.isRevenueDataExpanded.value =
+                !controller.isRevenueDataExpanded.value,
+                borderRadius: BorderRadius.circular(8.r),
                 child: Container(
+                  padding: EdgeInsets.all(12.w),
                   decoration: BoxDecoration(
-                    color: Colors.white,
                     borderRadius: BorderRadius.circular(8.r),
                     border: Border.all(color: AppColors.borderColor2, width: 1),
                   ),
-                  padding: EdgeInsets.all(12.w),
                   child: Row(
                     children: [
-                      SvgPicture.asset('assets/images/solar_chart-bold_icon.svg',height: 15.h,width: 16.13.w,),
+                      SvgPicture.asset(
+                        'assets/images/solar_chart-bold_icon.svg',
+                        height: 15.h,
+                        width: 16.13.w,
+                      ),
                       SizedBox(width: 8.w),
                       Text(
                         'Data & Cost Info',
@@ -333,16 +347,25 @@ class DataDetailView extends GetView<ScmController> {
                         ),
                       ),
                       const Spacer(),
-                      SvgPicture.asset(controller.isRevenueDataExpanded.value
-                          ? 'assets/images/minimize_icon.svg' : 'assets/images/expand_icon.svg',height: 24.h,width: 24.h,),
+                      AnimatedRotation(
+                        turns: controller.isRevenueDataExpanded.value ? 0.5 : 0,
+                        duration: const Duration(milliseconds: 300),
+                        child: SvgPicture.asset(
+                          controller.isRevenueDataExpanded.value
+                              ? 'assets/images/minimize_icon.svg'
+                              : 'assets/images/expand_icon.svg',
+                          height: 24.h,
+                          width: 24.h,
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
-
-              // Expandable Content
-              if (controller.isRevenueDataExpanded.value) ...[
-                Padding(
+              // Expandable Content with smooth transition
+              AnimatedCrossFade(
+                firstChild: const SizedBox(width: double.infinity),
+                secondChild: Padding(
                   padding: EdgeInsets.all(12.w),
                   child: Column(
                     children: [
@@ -356,7 +379,11 @@ class DataDetailView extends GetView<ScmController> {
                     ],
                   ),
                 ),
-              ],
+                crossFadeState: controller.isRevenueDataExpanded.value
+                    ? CrossFadeState.showSecond
+                    : CrossFadeState.showFirst,
+                duration: const Duration(milliseconds: 300),
+              ),
             ],
           ),
         ),
@@ -369,57 +396,21 @@ class DataDetailView extends GetView<ScmController> {
       children: [
         Row(
           children: [
-            Text(
-              label,
-              style: h4.copyWith(
-                fontSize: 12.sp,
-                color: AppColors.textColor2,
-              ),
-            ),
+            Text(label, style: h4.copyWith(fontSize: 12.sp, color: AppColors.textColor2)),
             SizedBox(width: 8.w),
-            Text(
-              ':',
-              style: h4.copyWith(
-                fontSize: 12.sp,
-                color: AppColors.textColor2,
-              ),
-            ),
+            Text(':', style: h4.copyWith(fontSize: 12.sp, color: AppColors.textColor2)),
             SizedBox(width: 8.w),
-            Text(
-              dataValue,
-              style: h2.copyWith(
-                fontSize: 12.sp,
-                color: AppColors.textColor4,
-              ),
-            ),
+            Text(dataValue, style: h2.copyWith(fontSize: 12.sp, color: AppColors.textColor4)),
           ],
         ),
         SizedBox(height: 4.h),
         Row(
           children: [
-            Text(
-              'Cost ${label.split(' ')[1]}',
-              style: h4.copyWith(
-                fontSize: 12.sp,
-                color: AppColors.textColor2,
-              ),
-            ),
+            Text('Cost ${label.split(' ')[1]}', style: h4.copyWith(fontSize: 12.sp, color: AppColors.textColor2)),
             SizedBox(width: 8.w),
-            Text(
-              ':',
-              style: h4.copyWith(
-                fontSize: 12.sp,
-                color: AppColors.textColor2,
-              ),
-            ),
+            Text(':', style: h4.copyWith(fontSize: 12.sp, color: AppColors.textColor2)),
             SizedBox(width: 8.w),
-            Text(
-              costValue,
-              style: h2.copyWith(
-                fontSize: 12.sp,
-                color: AppColors.textColor4,
-              ),
-            ),
+            Text(costValue, style: h2.copyWith(fontSize: 12.sp, color: AppColors.textColor4)),
           ],
         ),
       ],
@@ -428,7 +419,6 @@ class DataDetailView extends GetView<ScmController> {
 
   Widget _buildDateFilterChip({required String label, required bool isSelected}) {
     final color = isSelected ? AppColors.primary : AppColors.textColor2;
-
     return Row(
       children: [
         Container(
@@ -436,20 +426,12 @@ class DataDetailView extends GetView<ScmController> {
           height: 12.w,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(
-              color: color,
-              width: 1,
-            ),
+            border: Border.all(color: color, width: 1),
           ),
           child: Padding(
             padding: EdgeInsets.all(2.w),
             child: Container(
-              width: 10.w,
-              height: 10.w,
-              decoration: BoxDecoration(
-                color: color,
-                shape: BoxShape.circle,
-              ),
+              decoration: BoxDecoration(color: color, shape: BoxShape.circle),
             ),
           ),
         ),
@@ -476,19 +458,9 @@ class DataDetailView extends GetView<ScmController> {
       ),
       child: Row(
         children: [
-          Text(
-            label,
-            style: h4.copyWith(
-              fontSize: 12.sp,
-              color: AppColors.textColor2,
-            ),
-          ),
+          Text(label, style: h4.copyWith(fontSize: 12.sp, color: AppColors.textColor2)),
           const Spacer(),
-          Icon(
-            Icons.calendar_today_outlined,
-            size: 18.w,
-            color: AppColors.textColor2,
-          ),
+          Icon(Icons.calendar_today_outlined, size: 18.w, color: AppColors.textColor2),
         ],
       ),
     );
@@ -497,8 +469,6 @@ class DataDetailView extends GetView<ScmController> {
   Widget _buildToggleButton({required String label, required bool isSelected}) {
     final color = isSelected ? AppColors.primary : AppColors.borderColor2;
     final textColor = isSelected ? AppColors.primary : AppColors.textColor2;
-    final textStyle = isSelected ? h2 : h4;
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -507,31 +477,15 @@ class DataDetailView extends GetView<ScmController> {
           height: 14.w,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(
-              color: color,
-              width: 1,
-            ),
+            border: Border.all(color: color, width: 1),
           ),
           child: Padding(
             padding: EdgeInsets.all(2.w),
-            child: Container(
-              width: 10.w,
-              height: 10.w,
-              decoration: BoxDecoration(
-                color: color,
-                shape: BoxShape.circle,
-              ),
-            ),
+            child: Container(decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
           ),
         ),
         SizedBox(width: 8.w),
-        Text(
-          label,
-          style: textStyle.copyWith(
-            fontSize: 16.sp,
-            color: textColor,
-          ),
-        ),
+        Text(label, style: (isSelected ? h2 : h4).copyWith(fontSize: 16.sp, color: textColor)),
       ],
     );
   }
@@ -550,27 +504,11 @@ class DataDetailView extends GetView<ScmController> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(
-                title,
-                style: h2.copyWith(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.textColor4,
-                ),
-              ),
-              Text(
-                dataTotal,
-                style: h2.copyWith(
-                  fontSize: 32.sp,
-                  fontWeight: FontWeight.w700,
-                  color: const Color(0xFF0F1E32),
-                ),
-              ),
+              Text(title, style: h2.copyWith(fontSize: 14.sp, fontWeight: FontWeight.w700, color: AppColors.textColor4)),
+              Text(dataTotal, style: h2.copyWith(fontSize: 32.sp, fontWeight: FontWeight.w700, color: const Color(0xFF0F1E32))),
             ],
           ),
-
           SizedBox(height: 16.h),
-
           _buildDataCard('Data A', AppColors.primary, '2798.50 (29.53%)', '35689 ৳'),
           SizedBox(height: 6.h),
           _buildDataCard('Data B', AppColors.dataColor2, '72598.50 (35.39%)', '5259689 ৳'),
@@ -596,92 +534,37 @@ class DataDetailView extends GetView<ScmController> {
             children: [
               Column(
                 children: [
-                  Container(
-                    width: 8.w,
-                    height: 8.w,
-                    decoration: BoxDecoration(
-                      color: color,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
+                  Container(width: 8.w, height: 8.w, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
                   SizedBox(height: 8.h),
-                  Text(
-                    label,
-                    style: h2.copyWith(
-                      fontSize: 12.sp,
-                      color: AppColors.textColor4,
-                    ),
-                  ),
+                  Text(label, style: h2.copyWith(fontSize: 12.sp, color: AppColors.textColor4)),
                 ],
               ),
               SizedBox(width: 10.w),
-              Container(
-                width: 1,
-                height: 40.h,
-                color: AppColors.borderColor,
-              ),
+              Container(width: 1, height: 40.h, color: AppColors.borderColor),
             ],
           ),
-
           SizedBox(width: 12.w),
-
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
-                    Text(
-                      'Data',
-                      style: h4.copyWith(
-                        fontSize: 12.sp,
-                        color: AppColors.textColor2,
-                      ),
-                    ),
+                    Text('Data', style: h4.copyWith(fontSize: 12.sp, color: AppColors.textColor2)),
                     SizedBox(width: 12.w),
-                    Text(
-                      ':',
-                      style: h4.copyWith(
-                        fontSize: 12.sp,
-                        color: AppColors.textColor2,
-                      ),
-                    ),
+                    Text(':', style: h4.copyWith(fontSize: 12.sp, color: AppColors.textColor2)),
                     SizedBox(width: 4.w),
-                    Text(
-                      dataValue,
-                      style: h2.copyWith(
-                        fontSize: 12.sp,
-                        color: AppColors.textColor4,
-                      ),
-                    ),
+                    Text(dataValue, style: h2.copyWith(fontSize: 12.sp, color: AppColors.textColor4)),
                   ],
                 ),
                 SizedBox(height: 4.h),
                 Row(
                   children: [
-                    Text(
-                      'Cost',
-                      style: h4.copyWith(
-                        fontSize: 12.sp,
-                        color: AppColors.textColor2,
-                      ),
-                    ),
+                    Text('Cost', style: h4.copyWith(fontSize: 12.sp, color: AppColors.textColor2)),
                     SizedBox(width: 12.w),
-                    Text(
-                      ':',
-                      style: h4.copyWith(
-                        fontSize: 12.sp,
-                        color: AppColors.textColor2,
-                      ),
-                    ),
+                    Text(':', style: h4.copyWith(fontSize: 12.sp, color: AppColors.textColor2)),
                     SizedBox(width: 4.w),
-                    Text(
-                      costValue,
-                      style: h2.copyWith(
-                        fontSize: 12.sp,
-                        color: AppColors.textColor4,
-                      ),
-                    ),
+                    Text(costValue, style: h2.copyWith(fontSize: 12.sp, color: AppColors.textColor4)),
                   ],
                 ),
               ],
