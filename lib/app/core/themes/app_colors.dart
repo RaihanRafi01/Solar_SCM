@@ -10,6 +10,12 @@ class AppColors {
   static const Color borderColor = Color(0xFFB6B8D0);
   static const Color borderColor2 = Color(0xFFA5A7B9);
 
+  static const Color cream = Color(0xFFE2EBF1);
+
+  static const Color dataColor2 = Color(0xFF7BD7FF);
+  static const Color dataColor3 = Color(0xFF9747FF);
+  static const Color dataColor4 = Color(0xFFFF9A00);
+
 
   static const Color red = Color(0xFFDF2222);
   static const Color orange = Color(0xFFFB902E);
@@ -20,7 +26,6 @@ class AppColors {
   // Text Colors
   static const Color textPrimary = Color(0xFF082438);
 
-  static const Color textColor1 = Color(0xFF04063E);
 
   static const Color textColor2 = Color(0xFF646984);
   static const Color textColor3 = Color(0xFF979797);

@@ -16,6 +16,8 @@ class ScmController extends GetxController {
 
   final activeView = ScmContentView.initialSummary.obs;
 
+  final isRevenueDataExpanded = false.obs;
+
 
   RxBool isDataViewSelected = true.obs;
 
