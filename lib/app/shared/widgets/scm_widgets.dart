@@ -68,7 +68,7 @@ mixin ScmWidgets {
         padding: EdgeInsets.all(8.r),
         decoration: BoxDecoration(
           color: AppColors.cardColor1,
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(4.r),
           border: Border.all(
             color: AppColors.borderColor2,
             width: 1,

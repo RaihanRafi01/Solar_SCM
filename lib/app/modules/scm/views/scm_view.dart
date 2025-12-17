@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import '../../../core/themes/app_colors.dart';
 import '../../../core/themes/app_text_styles.dart';
 import '../controllers/scm_controller.dart';
-import '../../../shared/widgets/gradient_scroll_thumb.dart';
 import '../../../shared/widgets/scm_widgets.dart';
 import 'action_screen_view.dart';
 import 'data_detail_view.dart';
@@ -42,11 +41,14 @@ class ScmView extends GetView<ScmController> with ScmWidgets {
         actions: [
           Padding(
             padding: const EdgeInsets.all(16).r,
-            child: SvgPicture.asset('assets/images/bell_icon.svg',height: 20.h,width: 20.h,),
+            child: SvgPicture.asset(
+              'assets/images/bell_icon.svg',
+              height: 20.h,
+              width: 20.h,
+            ),
           )
         ],
       ),
-      // *** THE FIX: Use Obx to switch the body content ***
       body: Obx(() {
         switch (controller.activeView.value) {
           case ScmContentView.initialSummary:
@@ -63,9 +65,7 @@ class ScmView extends GetView<ScmController> with ScmWidgets {
   }
 
   Widget _buildInitialSummaryContent(BuildContext context) {
-    final double thumbThickness = 5.w;
-    final double thumbRadius = 5.r;
-    final double listHeight = 250.h;
+    const double listHeight = 250; // Keep consistent with your original
 
     return SingleChildScrollView(
       child: Column(
@@ -131,32 +131,36 @@ class ScmView extends GetView<ScmController> with ScmWidgets {
                         ),
                       ),
                       SizedBox(height: 6.h),
-                      Divider(height: 2.h, color: AppColors.textColor3,thickness: 2,),
+                      Divider(height: 2.h, color: AppColors.textColor3, thickness: 2),
                       SizedBox(height: 12.h),
 
                       SizedBox(
-                        height: listHeight,
+                        height: listHeight.h,
                         child: NotificationListener<ScrollNotification>(
                           onNotification: (notification) {
                             if (notification is ScrollUpdateNotification) {
                               controller.scrollOffset.value = notification.metrics.pixels;
-                            } else if (notification.metrics.maxScrollExtent > 0) {
-                              controller.maxScrollExtent.value = notification.metrics.maxScrollExtent;
-                              controller.viewportSize.value = notification.metrics.viewportDimension;
                             }
-                            return false;
+                            if (notification is ScrollMetricsNotification || notification is OverscrollNotification) {
+                              if (notification.metrics.maxScrollExtent > 0) {
+                                controller.maxScrollExtent.value = notification.metrics.maxScrollExtent;
+                                controller.viewportSize.value = notification.metrics.viewportDimension;
+                              }
+                            }
+                            return true;
                           },
                           child: Stack(
                             children: [
                               Padding(
-                                padding: EdgeInsets.only(right: thumbThickness + 6.w),
+                                padding: EdgeInsets.only(right: 12.w),
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(12.r),
+                                  borderRadius: BorderRadius.circular(4.r),
                                   child: Stack(
                                     children: [
                                       ListView(
                                         controller: controller.scrollController,
-                                        physics: const AlwaysScrollableScrollPhysics(),
+                                        physics: const ClampingScrollPhysics(),
+                                        padding: EdgeInsets.only(bottom: 30.h),
                                         children: [
                                           buildDataCard('Data View', 'assets/images/solar-cell_icon.png', true, '55505.63', '58805.63', AppColors.appColor3),
                                           SizedBox(height: 12.h),
@@ -171,27 +175,24 @@ class ScmView extends GetView<ScmController> with ScmWidgets {
                                           buildDataCard('Data Type 3', 'assets/images/power_grid_icon.png', false, '55505.63', '58805.63', AppColors.appColor3),
                                           SizedBox(height: 12.h),
                                           buildDataCard('Data View', 'assets/images/solar-cell_icon.png', true, '55505.63', '58805.63', AppColors.appColor3),
-                                          SizedBox(height: 12.h),
-                                          buildDataCard('Data Type 2', 'assets/images/power_icon.png', true, '55505.63', '58805.63', AppColors.orange),
-                                          SizedBox(height: 12.h),
-                                          buildDataCard('Data Type 3', 'assets/images/power_grid_icon.png', false, '55505.63', '58805.63', AppColors.appColor3),
                                         ],
                                       ),
-
-                                      Positioned.fill(
-                                        child: Align(
-                                          alignment: Alignment.bottomCenter,
-                                          child: IgnorePointer(
-                                            child: DecoratedBox(
-                                              decoration: BoxDecoration(
-                                                gradient: LinearGradient(
-                                                  begin: Alignment.bottomCenter,
-                                                  end: Alignment.topCenter,
-                                                  colors: [AppColors.startColor, AppColors.endColor],
-                                                  stops: const [0.0, 1.0],
-                                                ),
+                                      Positioned(
+                                        left: 0,
+                                        right: 0,
+                                        bottom: 0,
+                                        child: IgnorePointer(
+                                          child: Container(
+                                            height: 30.h,
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                begin: Alignment.bottomCenter,
+                                                end: Alignment.topCenter,
+                                                colors: [
+                                                  AppColors.startColor,
+                                                  AppColors.endColor.withOpacity(0)
+                                                ],
                                               ),
-                                              child: SizedBox(height: 30.h, width: double.infinity),
                                             ),
                                           ),
                                         ),
@@ -200,17 +201,56 @@ class ScmView extends GetView<ScmController> with ScmWidgets {
                                   ),
                                 ),
                               ),
+                              // Scrollbar Track and Thumb
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: Obx(() {
+                                  final double trackHeight = listHeight.h;
+                                  const double thumbHeight = 33.0;
 
-                              Obx(() => GradientScrollThumb(
-                                thickness: thumbThickness,
-                                radius: thumbRadius,
-                                trackHeight: listHeight,
-                                totalScrollExtent: controller.maxScrollExtent.value,
-                                viewportDimension: controller.viewportSize.value,
-                                currentScrollOffset: controller.scrollOffset.value,
-                                scrollController: controller.scrollController,
-                                trackColor: Colors.black.withOpacity(0.1),
-                              )),
+                                  final double maxExtent = controller.maxScrollExtent.value;
+                                  final double scrollOffset = controller.scrollOffset.value;
+
+                                  final double scrollPercent = maxExtent > 0
+                                      ? (scrollOffset / maxExtent).clamp(0.0, 1.0)
+                                      : 0.0;
+
+                                  final double topPosition = (trackHeight - thumbHeight.h) * scrollPercent;
+
+                                  return Container(
+                                    width: 4.w,
+                                    height: trackHeight,
+                                    margin: EdgeInsets.only(right: 4.w),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.borderColor.withOpacity(0.3),
+                                      borderRadius: BorderRadius.circular(4.r),
+                                    ),
+                                    child: Stack(
+                                      children: [
+                                        Positioned(
+                                          top: topPosition,
+                                          left: 0,
+                                          right: 0,
+                                          child: Container(
+                                            height: thumbHeight.h,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(4.r),
+                                              gradient: const LinearGradient(
+                                                colors: [
+                                                  AppColors.indicatorColor1,
+                                                  AppColors.indicatorColor2,
+                                                ],
+                                                begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }),
+                              ),
                             ],
                           ),
                         ),
@@ -222,11 +262,11 @@ class ScmView extends GetView<ScmController> with ScmWidgets {
             ),
           ),
 
+          // Action buttons section
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 6.h),
             child: Column(
               children: [
-                // Assume buildActionButton is updated to call controller.navigateToActionScreen()
                 Row(
                   children: [
                     Expanded(child: buildActionButton('assets/images/analysis_icon.png', 'Analysis Pro')),
@@ -259,7 +299,6 @@ class ScmView extends GetView<ScmController> with ScmWidgets {
     );
   }
 
-  // Helper for Power Circle
   Widget _buildPowerCircle() {
     return Center(
       child: SizedBox(
