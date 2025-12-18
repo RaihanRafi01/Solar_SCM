@@ -7,15 +7,12 @@ import 'package:scube_task/app/core/themes/app_theme.dart';
 import 'package:scube_task/app/routes/app_pages.dart';
 
 void main() async {
-  // 2. Ensure bindings are initialized
   WidgetsFlutterBinding.ensureInitialized();
 
-  // 3. Set preferred orientations
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-
   runApp(const MainApp());
 }
 
