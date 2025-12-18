@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:scube_task/app/core/constants/app_assets.dart';
 import '../../../core/themes/app_colors.dart';
 import '../../../core/themes/app_text_styles.dart';
 import '../controllers/scm_controller.dart';
@@ -29,7 +30,7 @@ class ActionScreenView extends GetView<ScmController> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset('assets/images/no_data_image.png', scale: 4),
+              Image.asset(AppAssets.noDataImage, scale: 4),
               SizedBox(height: 16.h),
               Text(
                 'No data is here,\nplease wait.',

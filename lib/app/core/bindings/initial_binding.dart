@@ -1,12 +1,11 @@
 import 'package:get/get.dart';
+import 'package:scube_task/app/modules/authentication/controllers/authentication_controller.dart';
+import '../../modules/scm/controllers/scm_controller.dart';
 
-/// Initial binding for the application
-/// This binding is responsible for initializing dependencies
-/// that need to be available throughout the app lifecycle
 class InitialBinding extends Bindings {
   @override
   void dependencies() {
-    // Initialize basic dependencies here
-    // Example: Get.put<ServiceName>(ServiceImplementation());
+    Get.put(AuthenticationController());
+    Get.put(ScmController());
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import '../../../core/constants/app_assets.dart';
 import '../../../core/themes/app_colors.dart';
 import '../../../core/themes/app_text_styles.dart';
 import '../controllers/scm_controller.dart';
@@ -39,7 +40,7 @@ class ScmView extends GetView<ScmController> with ScmWidgets {
           Padding(
             padding: const EdgeInsets.all(16).r,
             child: SvgPicture.asset(
-              'assets/images/bell_icon.svg',
+              AppAssets.bellIcon,
               height: 20.h,
               width: 20.h,
             ),
@@ -162,17 +163,17 @@ class ScmView extends GetView<ScmController> with ScmWidgets {
                                         physics: const ClampingScrollPhysics(),
                                         padding: EdgeInsets.only(bottom: 30.h),
                                         children: [
-                                          buildDataCard('Data View', 'assets/images/solar-cell_icon.png', true, '55505.63', '58805.63', AppColors.appColor3),
+                                          buildDataCard('Data View', AppAssets.solarCellIcon, true, '55505.63', '58805.63', AppColors.appColor3),
                                           SizedBox(height: 12.h),
-                                          buildDataCard('Data Type 2', 'assets/images/power_icon.png', true, '55505.63', '58805.63', AppColors.orange),
+                                          buildDataCard('Data Type 2', AppAssets.powerIcon, true, '55505.63', '58805.63', AppColors.orange),
                                           SizedBox(height: 12.h),
-                                          buildDataCard('Data Type 3', 'assets/images/power_grid_icon.png', false, '55505.63', '58805.63', AppColors.appColor3),
+                                          buildDataCard('Data Type 3', AppAssets.powerGridIcon, false, '55505.63', '58805.63', AppColors.appColor3),
                                           SizedBox(height: 12.h),
-                                          buildDataCard('Data View', 'assets/images/solar-cell_icon.png', true, '55505.63', '58805.63', AppColors.appColor3),
+                                          buildDataCard('Data View', AppAssets.solarCellIcon, true, '55505.63', '58805.63', AppColors.appColor3),
                                           SizedBox(height: 12.h),
-                                          buildDataCard('Data Type 2', 'assets/images/power_icon.png', true, '55505.63', '58805.63', AppColors.orange),
+                                          buildDataCard('Data Type 2', AppAssets.powerIcon, true, '55505.63', '58805.63', AppColors.orange),
                                           SizedBox(height: 12.h),
-                                          buildDataCard('Data Type 3', 'assets/images/power_grid_icon.png', false, '55505.63', '58805.63', AppColors.appColor3),
+                                          buildDataCard('Data Type 3', AppAssets.powerGridIcon, false, '55505.63', '58805.63', AppColors.appColor3),
                                         ],
                                       ),
                                       _buildBottomGradient(),
@@ -285,25 +286,25 @@ class ScmView extends GetView<ScmController> with ScmWidgets {
         children: [
           Row(
             children: [
-              Expanded(child: buildActionButton('assets/images/analysis_icon.png', 'Analysis Pro')),
+              Expanded(child: buildActionButton(AppAssets.analysisIcon, 'Analysis Pro')),
               SizedBox(width: 12.w),
-              Expanded(child: buildActionButton('assets/images/generator_icon.png', 'G. Generator')),
+              Expanded(child: buildActionButton(AppAssets.generatorIcon, 'G. Generator')),
             ],
           ),
           SizedBox(height: 12.h),
           Row(
             children: [
-              Expanded(child: buildActionButton('assets/images/charge_icon.png', 'Plant Summary')),
+              Expanded(child: buildActionButton(AppAssets.chargeIcon, 'Plant Summary')),
               SizedBox(width: 12.w),
-              Expanded(child: buildActionButton('assets/images/fire_icon.png', 'Natural Gas')),
+              Expanded(child: buildActionButton(AppAssets.fireIcon, 'Natural Gas')),
             ],
           ),
           SizedBox(height: 12.h),
           Row(
             children: [
-              Expanded(child: buildActionButton('assets/images/generator_icon.png', 'D. Generator')),
+              Expanded(child: buildActionButton(AppAssets.generatorIcon, 'D. Generator')),
               SizedBox(width: 12.w),
-              Expanded(child: buildActionButton('assets/images/faucet_icon.png', 'Water Process')),
+              Expanded(child: buildActionButton(AppAssets.faucetIcon, 'Water Process')),
             ],
           ),
           SizedBox(height: 20.h),

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:scube_task/app/modules/scm/views/scm_view.dart';
+import '../../../core/constants/app_assets.dart';
 import '../../../core/themes/app_colors.dart';
 import '../../../core/themes/app_text_styles.dart';
 import '../../../shared/widgets/custom_button.dart';
@@ -32,7 +33,7 @@ class AuthenticationView extends GetView<AuthenticationController> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
-                      'assets/images/app_icon.png',
+                      AppAssets.appIcon,
                       scale: 4,
                     ),
                     SizedBox(height: 24.h),
@@ -85,8 +86,8 @@ class AuthenticationView extends GetView<AuthenticationController> {
                       suffixIcon: IconButton(
                         icon: SvgPicture.asset(
                           controller.isPasswordVisible.value
-                              ? 'assets/images/visibility.svg'
-                              : 'assets/images/visibility_off.svg',
+                              ? AppAssets.visibilityIcon
+                              : AppAssets.visibilityOffIcon,
                           width: 22.w,
                           height: 22.h,
                           colorFilter: ColorFilter.mode(

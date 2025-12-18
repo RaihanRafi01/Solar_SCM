@@ -5,15 +5,9 @@ import '../modules/scm/bindings/scm_binding.dart';
 import '../modules/scm/views/scm_view.dart';
 
 part 'app_routes.dart';
-
-/// Application Pages & Routes
 class AppPages {
   AppPages._();
-
-  /// Initial route
-  static const INITIAL = Routes.SCM;
-
-  /// All application routes
+  static const INITIAL = Routes.AUTHENTICATION;
   static final routes = <GetPage>[
     GetPage(
       name: _Paths.SCM,

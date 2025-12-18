@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import '../../core/constants/app_assets.dart';
 import '../../core/themes/app_colors.dart';
 import '../../core/themes/app_text_styles.dart';
 import '../../modules/scm/controllers/scm_controller.dart';
@@ -131,7 +132,7 @@ mixin ScmWidgets {
                 ],
               ),
             ),
-            SvgPicture.asset('assets/images/right_icon.svg')
+            SvgPicture.asset(AppAssets.rightIcon)
           ],
         ),
       ),

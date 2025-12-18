@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'dart:math';
+import '../../../core/constants/app_assets.dart';
 import '../../../core/themes/app_colors.dart';
 import '../../../core/themes/app_text_styles.dart';
 import '../controllers/scm_controller.dart';
@@ -138,7 +139,7 @@ class DataDetailView extends GetView<ScmController> {
                                             border: Border.all(
                                                 color: AppColors.primary)),
                                         child: SvgPicture.asset(
-                                            'assets/images/search_icon.svg')),
+                                            AppAssets.searchIcon)),
                                   ],
                                 ),
                               ),
@@ -332,7 +333,7 @@ class DataDetailView extends GetView<ScmController> {
                   child: Row(
                     children: [
                       SvgPicture.asset(
-                        'assets/images/solar_chart-bold_icon.svg',
+                        AppAssets.solarChart,
                         height: 15.h,
                         width: 16.13.w,
                       ),
@@ -350,8 +351,8 @@ class DataDetailView extends GetView<ScmController> {
                         duration: const Duration(milliseconds: 300),
                         child: SvgPicture.asset(
                           controller.isRevenueDataExpanded.value
-                              ? 'assets/images/minimize_icon.svg'
-                              : 'assets/images/expand_icon.svg',
+                              ? AppAssets.minimizeIcon
+                              : AppAssets.expandIcon,
                           height: 24.h,
                           width: 24.h,
                         ),
