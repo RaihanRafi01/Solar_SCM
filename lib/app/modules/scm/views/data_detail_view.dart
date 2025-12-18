@@ -81,7 +81,6 @@ class DataDetailView extends GetView<ScmController> {
                           ? _buildDataViewContent()
                           : _buildRevenueViewContent(),
                       if (controller.isDataViewSelected.value) ...[
-                        SizedBox(height: 30.h),
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 16.w),
                           child: Row(
@@ -310,7 +309,6 @@ class DataDetailView extends GetView<ScmController> {
             ],
           ),
         ),
-        SizedBox(height: 16.h),
         Container(
           margin: EdgeInsets.symmetric(horizontal: 16.w),
           decoration: BoxDecoration(
