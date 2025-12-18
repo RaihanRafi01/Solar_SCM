@@ -1,160 +1,117 @@
-# Scube Task
+# **SCUBE SCM: Control & Monitoring System**
 
-A Flutter project created with **Gexd CLI** using getx.
-
-## 🏗️ Architecture
-
-This project uses **getx** pattern with the following structure:
-
-```
-lib/
-├── app/
-│   ├── core/
-│   │   ├── bindings/          # Dependency injection
-│   │   └── theme/             # App theming
-│   ├── modules/               # Feature modules
-│   │   └── home/              # Home module
-│   │       ├── bindings/      # Module bindings
-│   │       ├── controllers/   # Business logic
-│   │       └── views/         # UI components
-│   └── routes/                # Navigation
-└── main.dart                  # App entry point
-```
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Flutter SDK (latest stable version)
-- Dart SDK
-- Gexd CLI
-
-### Installation & Running
-
-1. **Install dependencies:**
-   ```bash
-   flutter pub get
-   ```
-
-2. **Run the app:**
-   ```bash
-   flutter run
-   ```
-
-3. **Build for production:**
-   ```bash
-   # Android
-   flutter build apk --release
-   
-   # iOS
-   flutter build ios --release
-   
-   # Web
-   flutter build web --release
-   ```
-
-## 🛠️ Gexd Commands
-
-### Generate Components
-```bash
-# Create a new screen
-gexd make screen Profile
-
-# Create a controller
-gexd make controller User
-
-# Create a service
-gexd make service Api
-
-# Create a model
-gexd make model User
-```
-
-### Project Management
-```bash
-# Initialize Gexd in existing project
-gexd init --template getx
-
-# Setup additional dependencies
-gexd setup
-
-# Generate project documentation
-gexd docs
-```
-
-## 📁 Project Structure
-
-### Key Directories
-- **`lib/app/modules/`** - Feature modules with GetX pattern
-- **`lib/app/core/`** - Core application functionality
-- **`lib/app/routes/`** - Navigation and routing
-- **`lib/app/core/theme/`** - Theme configuration
-
-### Generated Files
-- **`lib/main.dart`** - Application entry point
-- **`lib/app/routes/app_pages.dart`** - Route definitions
-- **`lib/app/core/bindings/initial_binding.dart`** - Global dependencies
-- **`lib/app/core/theme/app_theme.dart`** - Theme configuration
-
-## 🎨 Theming
-
-The project includes a comprehensive theming system:
-
-```dart
-// Light and dark theme support
-ThemeMode.system // Follows system preference
-
-// Custom colors and styles
-AppTheme.lightTheme
-AppTheme.darkTheme
-```
-
-## 🧪 Testing
-
-```bash
-# Run all tests
-flutter test
-
-# Run tests with coverage
-flutter test --coverage
-
-# Run integration tests
-flutter drive --target=test_driver/app.dart
-```
-
-## 📚 Learn More
-
-### Documentation
-- [Gexd Documentation](https://gexd.gitbook.io/gexd-docs)
-- [Flutter Documentation](https://docs.flutter.dev/)
-- [GetX Documentation](https://github.com/jonataslaw/getx)
-
-### Architecture Guides
-- [ Architecture Pattern](https://github.com/altwaireb/gexd/doc/)
-- [State Management Best Practices](https://github.com/altwaireb/gexd/doc/state-management)
-- [Project Structure Guidelines](https://github.com/altwaireb/gexd/doc/structure)
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **Gexd CLI** - For the amazing project generation
-- **Flutter Team** - For the incredible framework
-- **GetX Team** - For the powerful state management solution
+**SCUBE SCM** is a mission-critical industrial monitoring solution designed for real-time visibility into energy infrastructure. It bridges the gap between complex hardware data and human oversight through high-fidelity visualization, enabling engineers to monitor power distribution, analyze consumption trends, and manage revenue-to-cost ratios in one centralized dashboard.
 
 ---
 
-**Generated with ❤️ by [Gexd CLI](https://github.com/altwaireb/gexd)**
+## **🏗️ Architecture**
 
-📚 **[Complete Documentation](https://gexd.gitbook.io/gexd-docs)** | 🚀 **[Quick Start Guide](https://gexd.gitbook.io/gexd-docs)**
+This project follows a **Layered Clean Architecture** pattern using the GetX ecosystem. It is designed for maximum separation of concerns, making the codebase highly testable and scalable.
 
-> Ready to build something amazing? Start coding! 🚀
+### **Folder Structure**
+
+```text
+lib/
+├── app/
+│   ├── core/                  # Engine Room: Global configurations
+│   │   ├── bindings/          # Global dependency injection
+│   │   ├── constants/         # App assets (app_assets.dart)
+│   │   └── theme/             # Theming (colors, styles, theme data)
+│   ├── data/                  # Repository Layer (API/Storage)
+│   │   ├── datasource/        # Remote & Local providers
+│   │   ├── model/             # Data Transfer Objects (DTOs)
+│   │   └── services/          # Long-running background processes
+│   ├── modules/               # Feature Modules (Binding, Controller, View)
+│   │   ├── authentication/    # Auth & Security
+│   │   └── scm/               # Dashboard & Monitoring logic
+│   └── routes/                # Named Routing Manifest (app_pages, app_routes)
+├── main.dart                  # App Entry Point
+└── shared/                    # Reusable UI & Feature-specific widgets
+
+```
+
+---
+
+## **🚀 Getting Started**
+
+### **Prerequisites**
+
+* **Flutter SDK** (Latest Stable)
+* **Dart SDK**
+* **GetX CLI** (Optional, for scaffolding)
+
+### **Installation & Running**
+
+1. **Clone & Install:**
+```bash
+git clone https://github.com/RaihanRafi01/Solar_SCM.git
+flutter pub get
+
+```
+
+
+2. **Run the app:**
+```bash
+flutter run
+
+```
+
+
+---
+
+## **🛠️ Technical Stack**
+
+* **State Management:** `GetX` (Reactive logic using `.obs`)
+* **Responsive UI:** `flutter_screenutil` (Base design: 360x800)
+* **Vector Graphics:** `flutter_svg`
+* **Typography:** `google_fonts`
+
+---
+
+## **📁 Key Directories & Logic**
+
+### **4.1 Custom Graphics Engine**
+
+The application utilizes the `CustomPainter` API for precision industrial graphics:
+
+* **`CustomArcPainter`**: A mathematical implementation using Start and Sweep angles to represent dynamic energy loads.
+* **Power Circular Indicator**: A multi-layered stack with a background track and an animated foreground value.
+
+### **4.2 Navigation Lifecycle**
+
+Navigation is strategically handled using **Named Routes** to optimize device memory:
+
+### **4.3 Theming System**
+
+Located in `lib/app/core/theme/`:
+
+* **`app_colors.dart`**: Defines the semantic color palette for industrial monitoring.
+* **`app_text_styles.dart`**: Standardized typography scaling via Google Fonts.
+* **`app_theme.dart`**: Unified Light and Dark mode configurations.
+
+---
+
+## **📦 Module Breakdown**
+
+### **🔐 Authentication**
+
+* **UI**: Responsive login form with integrated validation.
+* **Logic**: Reactive session initialization and password visibility toggles.
+
+### **📊 SCM (Summary & Monitoring)**
+
+* **Real-time List**: A custom-built scrollable list with a **Gradient Bottom Fade** and **Custom Scrollbar Thumb**.
+* **Switching Logic**: A custom `enum` state in the `ScmController` dictates the rendering of Summary, Action Grid, or Detail views within a single `Obx` widget.
+
+### **📈 Data Detail**
+
+* **Interactive Toggles**: Seamless switching between "Data View" (Usage metrics) and "Revenue View" (Financial cost).
+* **Smooth Transitions**: Uses `AnimatedCrossFade` for "Data & Cost Info" panels to ensure a fluid user experience.
+
+---
+
+## **📄 License**
+
+Copyright © 2025 SCUBE. All rights reserved.
+
+---
