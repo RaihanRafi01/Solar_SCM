@@ -1,6 +1,6 @@
-# **SCUBE SCM: Control & Monitoring System**
+# **Solar SCM: Control & Monitoring System**
 
-**SCUBE SCM** is a mission-critical industrial monitoring solution designed for real-time visibility into energy infrastructure. It bridges the gap between complex hardware data and human oversight through high-fidelity visualization, enabling engineers to monitor power distribution, analyze consumption trends, and manage revenue-to-cost ratios in one centralized dashboard.
+**Solar SCM** is a mission-critical industrial monitoring solution designed for real-time visibility into energy infrastructure. It bridges the gap between complex hardware data and human oversight through high-fidelity visualization, enabling engineers to monitor power distribution, analyze consumption trends, and manage revenue-to-cost ratios in one centralized dashboard.
 
 ---
 
