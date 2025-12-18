@@ -5,27 +5,20 @@ class AppColors {
 
   // Primary Colors
   static const Color primary = Color(0xFF0096FC);
-
   static const Color txtInputBorder = Color(0xFFB9C6D6);
   static const Color borderColor = Color(0xFFB6B8D0);
   static const Color borderColor2 = Color(0xFFA5A7B9);
-
   static const Color cream = Color(0xFFE2EBF1);
-
   static const Color dataColor2 = Color(0xFF7BD7FF);
   static const Color dataColor3 = Color(0xFF9747FF);
   static const Color dataColor4 = Color(0xFFFF9A00);
 
-
   static const Color red = Color(0xFFDF2222);
   static const Color orange = Color(0xFFFB902E);
 
-
   static const Color textHint = Color(0xFF5E5E5E);
 
-  // Text Colors
   static const Color textPrimary = Color(0xFF082438);
-
 
   static const Color textColor2 = Color(0xFF646984);
   static const Color textColor3 = Color(0xFF979797);
@@ -42,7 +35,5 @@ class AppColors {
   static const Color cardColor1 = Color(0xFFE5F4FE);
   static final Color startColor = Color(0x9919416E);
   static final Color endColor = Color(0x002F548C);
-
-
 
 }

@@ -9,7 +9,6 @@ void main() {
   runApp(const MainApp());
 }
 
-/// Main Application Widget
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
@@ -19,33 +18,23 @@ class MainApp extends StatelessWidget {
       designSize: const Size(360, 800),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (context , child) {
+      builder: (context, child) {
         return GetMaterialApp(
           title: 'scube_task',
 
-          // Theme configuration
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: ThemeMode.system,
 
-          // Navigation configuration
           initialRoute: AppPages.INITIAL,
           getPages: AppPages.routes,
 
-          // Global bindings
           initialBinding: InitialBinding(),
 
-          // App configuration
           debugShowCheckedModeBanner: false,
           enableLog: true,
 
-          // Localization (uncomment if needed)
-          // locale: const Locale('en', 'US'),
-          // translations: AppTranslations(),
-
-          // Global middlewares
           routingCallback: (routing) {
-            // Add global route logging or analytics here
             debugPrint('[Navigation] ${routing?.current}');
           },
         );

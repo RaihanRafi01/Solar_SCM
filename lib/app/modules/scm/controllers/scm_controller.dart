@@ -12,9 +12,8 @@ class ScmController extends GetxController {
   final activeView = ScmContentView.initialSummary.obs;
   final isRevenueDataExpanded = false.obs;
 
-  // New Observables for UI Selection
-  final selectedTab = 'Summary'.obs; // Options: 'Summary', 'SLD', 'Data'
-  final selectedSourceLoad = 'Source'.obs; // Options: 'Source', 'Load'
+  final selectedTab = 'Summary'.obs;
+  final selectedSourceLoad = 'Source'.obs;
 
   RxBool isDataViewSelected = true.obs;
   RxBool isTodaySelected = true.obs;
@@ -27,18 +26,22 @@ class ScmController extends GetxController {
 
   void _ensureScrollbarVisibility() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (scrollController.hasClients && scrollController.position.maxScrollExtent > 0) {
+      if (scrollController.hasClients &&
+          scrollController.position.maxScrollExtent > 0) {
         maxScrollExtent.value = scrollController.position.maxScrollExtent;
         viewportSize.value = scrollController.position.viewportDimension;
       }
     });
   }
 
-  void navigateToActionScreen() => activeView.value = ScmContentView.actionScreen;
+  void navigateToActionScreen() =>
+      activeView.value = ScmContentView.actionScreen;
+
   void navigateToDataDetail() => activeView.value = ScmContentView.dataDetail;
+
   void navigateToSummary() => activeView.value = ScmContentView.initialSummary;
 
-  // Selection Methods
   void selectTab(String tabName) => selectedTab.value = tabName;
+
   void selectSourceLoad(String type) => selectedSourceLoad.value = type;
 }
